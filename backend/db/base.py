@@ -8,6 +8,12 @@ class User(BaseModel):
     email: str 
     hashed_password: str
 
+class Product(BaseModel):
+    id: int
+    name: str
+    quantity: int
+    price: float
+    product_type: str
 
 ######################## FETCHING FUNC ################################
 def fetch_all(query: str) -> dict:
@@ -115,6 +121,13 @@ def insert_user(user: User) -> bool:
         if 'conn' in locals() and conn.is_connected():
             conn.close()
 
+def fetch_products() -> Union[list[Product], bool]:
+    query = 'SELECT * FROM product'
+    data = fetch_all(query)
+    if data:
+        return [Product(**item) for item in data]
+    else:
+        return False
 
 ########################## UPDATE FUNC ####################################
 # def update_email(identifier: Union[str, int], is_username: bool = True) -> bool:
