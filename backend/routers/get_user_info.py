@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 from db.base import fetch_user_info
 from security.token_handler import get_current_user
+from fastapi.responses import JSONResponse
 
 router = APIRouter(prefix='/api')
 
@@ -8,5 +9,5 @@ router = APIRouter(prefix='/api')
 def get_user_info(username: str = Depends(get_current_user)):
     user_info = fetch_user_info(username, is_username=True)
     if user_info:
-        return user_info
-    return {"error": "User not found"}
+        return JSONResponse(content=user_info)
+    return JSONResponse(content={"error": "User not found"}, status_code=404)
