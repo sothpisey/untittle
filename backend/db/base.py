@@ -85,6 +85,16 @@ def fetch_user_info(identifier: Union[str, int], is_username: bool=True) -> Unio
             return User(**data[0])
         else:
             return False
+        
+
+def fetch_products() -> Union[list[Product], bool]:
+    query = 'SELECT * FROM product'
+    data = fetch_all(query)
+    if data:
+        return [Product(**item) for item in data]
+    else:
+        return False
+    
 
 ########################## INSERT FUNC #################################
 def insert_user(user: User) -> bool:
@@ -121,13 +131,6 @@ def insert_user(user: User) -> bool:
         if 'conn' in locals() and conn.is_connected():
             conn.close()
 
-def fetch_products() -> Union[list[Product], bool]:
-    query = 'SELECT * FROM product'
-    data = fetch_all(query)
-    if data:
-        return [Product(**item) for item in data]
-    else:
-        return False
 
 ########################## UPDATE FUNC ####################################
 # def update_email(identifier: Union[str, int], is_username: bool = True) -> bool:
