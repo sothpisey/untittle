@@ -3,10 +3,10 @@ from typing import Union
 from pydantic import BaseModel
 
 class User(BaseModel):
+    user_id: int
     username: str
     full_name: str
-    email: str 
-    hashed_password: str
+    email: str
 
 class Product(BaseModel):
     id: int

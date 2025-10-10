@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends
 from db.base import fetch_all
-from routers import auth, get_user_info, get_product_data, test
+from routers import auth, users, get_product_data
 from security.token_handler import get_current_user
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -23,6 +23,5 @@ app.add_middleware(
 )
 
 app.include_router(auth.router)
-app.include_router(get_user_info.router)
-app.include_router(test.router, prefix='/api')
+app.include_router(users.router)
 app.include_router(get_product_data.router)
