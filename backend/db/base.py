@@ -2,6 +2,7 @@ from .connection import get_connection
 from typing import Union
 from pydantic import BaseModel
 
+######################### Pydantic Models ##############################
 class User(BaseModel):
     user_id: int
     username: str
@@ -14,6 +15,13 @@ class Product(BaseModel):
     quantity: int
     price: float
     product_type: str
+
+class ProductCreate(BaseModel):
+    name: str
+    quantity: int
+    price: float
+    product_type: str
+
 
 ######################## FETCHING FUNC ################################
 def fetch_all(query: str) -> dict:
@@ -123,6 +131,39 @@ def insert_user(user: User) -> bool:
         return True
     except Exception as e:
         print(f"Error inserting user: {e}")
+        conn.rollback()
+        return False
+    finally:
+        if 'cursor' in locals():
+            cursor.close()
+        if 'conn' in locals() and conn.is_connected():
+            conn.close()
+
+
+def insert_product(product: ProductCreate) -> bool:
+    conn = get_connection()
+    if not conn:
+        return False
+
+    query = """
+    INSERT INTO product (name, quantity, price, product_type)
+    VALUES (%s, %s, %s, %s);
+    """
+
+    data_tuple = (
+        product.name,
+        product.quantity,
+        product.price,
+        product.product_type
+    )
+
+    try:
+        cursor = conn.cursor()
+        cursor.execute(query, data_tuple)
+        conn.commit()
+        return True
+    except Exception as e:
+        print(f'Error inserting product: {e}')
         conn.rollback()
         return False
     finally:
