@@ -23,6 +23,13 @@ class ProductCreate(BaseModel):
     product_type: str
 
 
+class ProductUpdate(BaseModel):
+    name: str = None
+    quantity: int = None
+    price: float = None
+    product_type: str = None
+
+
 ######################## FETCHING FUNC ################################
 def fetch_all(query: str) -> dict:
     conn = get_connection()
@@ -104,6 +111,23 @@ def fetch_products() -> Union[list[Product], bool]:
         return False
     
 
+def fetch_product_by_id(identifier: Union[str, int], is_username: bool=True) -> Union[Product, bool]:
+    if is_username:
+        query = f'SELECT * FROM product WHERE name="{identifier}"'
+        data = fetch_all(query)
+        if data:
+            return Product(**data[0])
+        else:
+            return False
+    else:
+        query = f'SELECT * FROM product WHERE id="{identifier}"'
+        data = fetch_all(query)
+        if data:
+            return Product(**data[0])
+        else:
+            return False
+        
+
 ########################## INSERT FUNC #################################
 def insert_user(user: User) -> bool:
     conn = get_connection()
@@ -174,7 +198,60 @@ def insert_product(product: ProductCreate) -> bool:
 
 
 ########################## UPDATE FUNC ####################################
-# def update_email(identifier: Union[str, int], is_username: bool = True) -> bool:
-#     if is_username:
+def update_product_in_db(product_data: Product) -> bool:
+    conn = get_connection()
+    if not conn:
+        return False
 
-#     return None
+    query = """
+    UPDATE product
+    SET name=%s, quantity=%s, price=%s, product_type=%s
+    WHERE id=%s;
+    """
+
+    data_tuple = (
+        product_data.name,
+        product_data.quantity,
+        product_data.price,
+        product_data.product_type,
+        product_data.id
+    )
+
+    try:
+        cursor = conn.cursor()
+        cursor.execute(query, data_tuple)
+        conn.commit()
+        return True
+    except Exception as e:
+        print(f'Error updating product: {e}')
+        conn.rollback()
+        return False
+    finally:
+        if 'cursor' in locals():
+            cursor.close()
+        if 'conn' in locals() and conn.is_connected():
+            conn.close()
+
+
+def delete_product_in_db(product_id: int) -> bool:
+    conn = get_connection()
+    if not conn:
+        return False
+
+    query = 'DELETE FROM product WHERE id=%s;'
+    data_tuple = (product_id,)
+
+    try:
+        cursor = conn.cursor()
+        cursor.execute(query, data_tuple)
+        conn.commit()
+        return True
+    except Exception as e:
+        print(f'Error deleting product: {e}')
+        conn.rollback()
+        return False
+    finally:
+        if 'cursor' in locals():
+            cursor.close()
+        if 'conn' in locals() and conn.is_connected():
+            conn.close()
