@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 from security.token_handler import get_current_user
 from security.token_handler import oauth2_scheme
 
-router = APIRouter(prefix='/api/auth', tags=['auth'])
+router = APIRouter(prefix='/api/v1/auth', tags=['auth'])
 
 class Token(BaseModel):
     access_token: str
@@ -17,7 +17,6 @@ class Token(BaseModel):
 
 @router.post("/login", response_model=Token)
 def login(form_data: OAuth2PasswordRequestForm = Depends()):
-    # Fetch user’s hashed password from DB
     hashed_password = fetch_hashed_password(form_data.username)
     if not hashed_password or not verify_password(form_data.password, hashed_password):
         raise HTTPException(
