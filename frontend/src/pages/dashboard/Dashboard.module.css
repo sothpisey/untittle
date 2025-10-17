@@ -1,0 +1,104 @@
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  width: calc(100% - 24px);
+  padding: 12px;
+  background-color: #202020;
+  outline: none;
+  transition: 0.3s;
+}
+.dashboardTitle {
+  color: #39ff14;
+  margin: 0;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+}
+
+.searchInput {
+  width: calc(100% - 300px);
+  padding: 12px;
+  margin: 8px 0;
+  border: 2px solid #444;
+  border-radius: 8px;
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+  outline: none;
+  transition: 0.3s;
+}
+
+.searchInput:focus {
+  border-color: #39ff14;
+  background-color: #333;
+}
+
+.logoutButton {
+    padding: 10px 18px;
+    margin: 8px 0;
+    border: solid 2px red;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 14px;
+    color: red;
+    background-color: #490000;
+}
+
+.logoutButton:hover {
+    background-color: red;
+    color: #b1b1b1;
+    cursor: pointer;
+    box-shadow: 0 0 5px red;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.tabContainer {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.tabContainer button.active {
+    font-weight: bold;
+    /* border-bottom: 2px solid #1814ff; */
+    background-color: rgb(112, 112, 112);
+}
+
+.tabButton {
+    display: inline-block;
+    padding: 10px 18px;
+    margin: 8px 0;
+    border: solid 2px #39ff14;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #39ff14;
+    background-color: #004900;
+    text-decoration: none;
+    text-align: center;
+}
+
+.tabButton:hover {
+    background-color: #39ff14;
+    color: #121212;
+    cursor: pointer;
+    box-shadow: 0 0 5px #39ff14;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+
+.tabContent {
+    overflow-y: scroll;
+    padding: 0;
+    margin: 12px 10px 0 0;
+    border: 3px solid #39ff14;
+    border-radius: 8px;
+    background-color: transparent;
+    height: calc(100vh - 200px);
+}
+
+.tab3 {
+    color: #39ff14;
+    font-size: 1.2rem;
+    padding: 20px;
+}
